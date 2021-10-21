@@ -30,13 +30,20 @@ death_per_cases<- data %>% filter(!is.na(continent)) %>% select(date,continent,l
 vaccinations<- data %>% filter(!is.na(continent)) %>% select(date,continent,location,population,new_vaccinations) %>% arrange(location,date)
 vaccination_total<- vaccinations %>% group_by(location) %>% mutate(total_vaccinations=cumsum(ifelse(is.na(new_vaccinations),0,new_vaccinations)))
 vaccination_total_percent<-vaccination_total %>% mutate(per_vaccinated=total_vaccinations/population*100) %>% mutate(per_vaccinated=round(per_vaccinated,2))
-     
+
+# Worldwide Data
+# Total cases and deaths in the world
+total_cases_world <- tibble(total_cases_w = sum(newcases_daywise$new_case),
+                            total_deaths= sum(newcases_daywise$deaths),
+                            Avg_Death_Percentage=(total_deaths/total_cases_w)*100)
+
 write_csv(total_cases,"/Users/tarunagrawal/Desktop/R Projects/totalcases_country.csv")   
 write_csv(death_data_country,"/Users/tarunagrawal/Desktop/R Projects/deaths_country.csv")   
 write_csv(death_data_continent,"/Users/tarunagrawal/Desktop/R Projects/deaths_continents.csv")   
 write_csv(newcases_daywise,"/Users/tarunagrawal/Desktop/R Projects/newcases_daywise.csv")  
 write_csv(death_per_cases,"/Users/tarunagrawal/Desktop/R Projects/deaths_percases_country.csv")  
 write_csv(vaccination_total_percent,"/Users/tarunagrawal/Desktop/R Projects/totalvaccineper_country.csv")   
+write_csv(total_cases_world,"/Users/tarunagrawal/Desktop/R Projects/totalcasesdeathsworld.csv")   
 
 
 
